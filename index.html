@@ -9,7 +9,7 @@
 main{position:relative}
 .scene{min-height:100svh;padding:130px 7vw 90px;display:flex;align-items:center;position:relative;isolation:isolate;border-top:1px solid var(--line)}
 .scene.center{justify-content:center;text-align:center}
-.scene-inner{width:min(1100px,100%);margin:auto;transform:translateY(var(--parallax,0px));transition:transform .35s ease}
+.scene-inner{width:min(1100px,100%);margin:auto}
 .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
 .display{font:500 clamp(40px,7vw,92px)/1.02 var(--serif);letter-spacing:-.03em;max-width:920px}
 .display em{color:var(--rose);font-style:italic}
@@ -22,19 +22,7 @@ main{position:relative}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:6vw;align-items:center}
 .portrait-frame{position:relative;width:min(460px,100%);margin:auto;padding:12px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.02));border:1px solid var(--line);box-shadow:var(--shadow)}
 .portrait-frame:before{content:"";position:absolute;inset:6px;border:1px solid rgba(210,178,122,.18);pointer-events:none}
-.portrait-frame img{width:100%;height:100%;object-fit:contain;background:#0f0d10;cursor:zoom-in}.portrait-frame{aspect-ratio:4/5;overflow:hidden}.photo-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:20px}.photo-slot{margin:0;border:1px solid var(--line);background:#100e11;padding:8px;box-shadow:0 18px 50px rgba(0,0,0,.22)}.photo-slot img{width:100%;height:clamp(280px,38vw,430px);aspect-ratio:4/5;object-fit:contain;background:#0b090c;cursor:zoom-in}.photo-slot figcaption{padding:10px 4px 4px;font-size:11px;letter-spacing:.08em;color:var(--muted)}@media(max-width:800px){.photo-gallery{grid-template-columns:1fr}.photo-slot img{height:auto;max-height:none}}
-.photo-slot,.portrait-frame{--mx:50%;--my:50%;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s ease}.photo-slot{position:relative;overflow:hidden}.photo-slot:after,.portrait-frame:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.18),transparent 34%);opacity:0;transition:opacity .35s ease}.photo-slot img,.portrait-frame img{transition:transform .55s var(--ease),filter .35s ease}.photo-slot.photo-active,.portrait-frame.photo-active{transform:translateY(-5px) scale(1.012);border-color:rgba(210,178,122,.55);box-shadow:0 24px 70px rgba(0,0,0,.35),0 0 32px rgba(215,143,167,.12)}.photo-slot.photo-active:after,.portrait-frame.photo-active:after{opacity:1}.photo-slot.photo-active img,.portrait-frame.photo-active img{transform:scale(1.035);filter:saturate(1.06) brightness(1.04)}.photo-heart{position:absolute;z-index:8;left:var(--x);top:var(--y);font-size:18px;color:var(--rose);pointer-events:none;animation:photoHeart 900ms var(--ease) forwards;filter:drop-shadow(0 0 8px rgba(215,143,167,.45))}.photo-heart.gold{color:var(--gold)}@keyframes photoHeart{0%{opacity:0;transform:translate(-50%,-20%) scale(.4) rotate(-8deg)}15%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-20% - 85px)) scale(1.15) rotate(var(--rot))}}.photo-placeholder{min-height:clamp(280px,38vw,430px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(145deg,rgba(215,143,167,.06),rgba(210,178,122,.04));border-style:dashed}.photo-placeholder-inner{display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--muted);padding:30px}.photo-placeholder-inner span{font-size:34px;color:var(--rose);font-weight:300}.photo-placeholder-inner b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text)}.photo-placeholder-inner small{font-size:9px;letter-spacing:.08em}.photo-hint{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.8}.photo-hint span{color:var(--rose)}
-
-/* extra interactions */
-.cursor-glow{position:fixed;z-index:2;width:220px;height:220px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(215,143,167,.11),rgba(210,178,122,.045) 32%,transparent 68%);filter:blur(2px);mix-blend-mode:screen;opacity:0;transition:opacity .25s}
-.card{position:relative;overflow:hidden;transform-style:preserve-3d;transition:transform .18s ease,box-shadow .3s ease,border-color .3s ease}.card:hover{box-shadow:0 22px 60px rgba(0,0,0,.24);border-color:rgba(215,143,167,.25)}
-.card-ripple{position:absolute;border-radius:50%;pointer-events:none;width:20px;height:20px;background:rgba(255,255,255,.18);transform:translate(-50%,-50%) scale(0);animation:ripple .7s ease-out forwards}
-@keyframes ripple{to{transform:translate(-50%,-50%) scale(14);opacity:0}}
-.click-spark{position:fixed;z-index:115;pointer-events:none;color:var(--rose);font-size:15px;animation:sparkFly .8s ease-out forwards;text-shadow:0 0 12px rgba(215,143,167,.5)}
-@keyframes sparkFly{0%{opacity:1;transform:translate(-50%,-50%) scale(.5) rotate(0)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.25) rotate(var(--rot))}}
-.section-progress{position:fixed;z-index:39;right:18px;top:50%;transform:translateY(-50%);display:grid;gap:8px}.section-progress button{width:7px;height:7px;padding:0;border-radius:50%;background:var(--muted);opacity:.35;transition:.25s}.section-progress button.active{opacity:1;transform:scale(1.55);background:var(--rose);box-shadow:0 0 12px rgba(215,143,167,.5)}
-@media(max-width:800px){.cursor-glow,.section-progress{display:none}}
-
+.portrait-frame img{width:100%;height:auto;object-fit:contain;background:#0f0d10;cursor:zoom-in}
 .caption{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:14px;display:flex;justify-content:space-between}
 .quote{font:italic clamp(28px,4.4vw,58px)/1.14 var(--serif);max-width:880px}
 .quote small{display:block;font:11px var(--sans);font-style:normal;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;margin-top:22px}
@@ -96,7 +84,7 @@ textarea.field{min-height:110px;resize:vertical}
 <body>
 <div class="noise"></div>
 <header class="topbar">
-  <a class="brand" href="#s01">buat <em>ANONIM</em></a>
+  <a class="brand" href="#s01">buat <em>MAY</em></a>
   <div class="tools">
     <button class="tool musicBtn" title="Musik">♫ off</button>
     <button class="tool themeBtn" title="Tema">◐</button>
@@ -104,15 +92,13 @@ textarea.field{min-height:110px;resize:vertical}
   </div>
 </header>
 <div class="progress"><i></i></div>
-<div class="cursor-glow"></div>
-<div class="section-progress" aria-label="Navigasi bab"></div>
 
 <main>
 
 <section class="scene center" id="s01">
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 01 · cerita kecil, buat satu orang</div>
-    <h1 class="display">Halo, <em>ANONIM</em>.</h1>
+    <h1 class="display">Halo, <em>MAY</em>.</h1>
     <p class="lead">Ada beberapa hal yang pengen aku sampein, tapi rasanya kalau cuma lewat chat suka keburu ilang atau kekesan nggak niat. Jadi aku tulis pelan-pelan di sini. Nggak usah buru-buru bacanya.</p>
     <button class="cta" data-go="s02">Mulai baca</button>
   </div>
@@ -132,11 +118,11 @@ textarea.field{min-height:110px;resize:vertical}
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 03 · sedikit tentang aku</div>
     <h2 class="title">Kenalan dulu, ya</h2>
-    <p class="lead">[Ceritain singkat tentang diri kamu — kesibukan, kepribadian, atau hal random yang bikin kamu, ya kamu.]</p>
+    <p class="lead"></p>
     <div class="cards">
-      <div class="card"><b>Kenal dari</b><p>[isi ceritanya di sini]</p></div>
-      <div class="card"><b>Sejak kapan</b><p>[isi ceritanya di sini]</p></div>
-      <div class="card"><b>Yang beda</b><p>[hal yang bikin momen ini kerasa beda]</p></div>
+      <div class="card"><b>Kenal dari</b><p>dari mana lagi kalo bukan dari kampus</p></div>
+      <div class="card"><b>Sejak kapan</b><p>kalo kamu mau tau sejak kapan? kapan kapan</p></div>
+      <div class="card"><b>Yang beda</b><p>kalo yang beda, bedanya... gatau bedanya apa</p></div>
     </div>
   </div>
 </section>
@@ -145,11 +131,11 @@ textarea.field{min-height:110px;resize:vertical}
   <div class="scene-inner hero-grid">
     <div class="reveal">
       <div class="eyebrow">bab 04 · tentang kamu</div>
-      <h2 class="display" style="font-size:clamp(34px,5.5vw,62px)">Tentang <em>ANONIM</em></h2>
-      <p class="lead">[Tulis 2–3 kalimat tentang sifat dia yang kamu suka — cara dia ketawa, cara dia peduli sama orang, atau apapun yang bikin kamu notice dia lebih dari yang lain.]</p>
+      <h2 class="display" style="font-size:clamp(34px,5.5vw,62px)">Tentang <em>MAY</em></h2>
+      <p class="lead">kalo tentang kamu aku belum tau banyak jadi aku kosongin aja</p>
     </div>
     <div class="reveal">
-      <div class="portrait-frame"><img src="foto/foto1.jpeg" alt="ANONIM" data-zoom loading="lazy"></div>
+      <div class="portrait-frame"><img src="foto/foto1.jpeg" alt="MAY" data-zoom loading="lazy"></div>
       <div class="caption"><span>foto1.jpeg</span><span>satu potret</span></div>
     </div>
   </div>
@@ -167,9 +153,9 @@ textarea.field{min-height:110px;resize:vertical}
     <div class="eyebrow">bab 06 · yang aku suka</div>
     <h2 class="title">Hal-hal kecil yang aku suka dari kamu</h2>
     <div class="cards">
-      <div class="card"><b>01</b><p>[hal kecil pertama yang kamu perhatiin dari dia]</p></div>
-      <div class="card"><b>02</b><p>[hal kecil kedua]</p></div>
-      <div class="card"><b>03</b><p>[hal kecil ketiga]</p></div>
+      <div class="card"><b>01</b><p>aku suka jailin kamu</p></div>
+      <div class="card"><b>02</b><p>aku suka liat kamu ketawa</p></div>
+      <div class="card"><b>03</b><p>aku suka kamu</p></div>
     </div>
   </div>
 </section>
@@ -178,22 +164,18 @@ textarea.field{min-height:110px;resize:vertical}
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 07 · kebiasaan kamu</div>
     <h2 class="title">Kebiasaan kamu yang aku perhatiin</h2>
-    <p class="lead">[Tulis kebiasaan-kebiasaan kecil dia yang bikin gemes atau bikin kamu ketawa sendiri kalau inget.]</p>
+    <p class="lead">gatau sih ya soalnya kebanyakan jailin kamu jadi ga aku perhatiin</p>
   </div>
 </section>
 
 <section class="scene" id="s08">
   <div class="scene-inner reveal">
-    <div class="eyebrow">bab 08 · enam potret</div>
-    <h2 class="title">Enam potret yang aku simpan</h2>
-    <p class="small">Semua foto memakai frame dengan ukuran yang konsisten supaya pas dengan garis desain dan tetap mempertahankan bentuk asli foto.</p>
-    <div class="photo-hint"><span>♡</span> klik foto untuk melihat interaksi</div>
-    <div class="photo-gallery">
-      <figure class="photo-slot"><img src="foto/foto2.jpeg" alt="Potret 2" data-zoom loading="lazy"><figcaption>potret 02</figcaption></figure>
-      <figure class="photo-slot"><img src="foto/foto3.jpeg" alt="Potret 3" data-zoom loading="lazy"><figcaption>potret 03</figcaption></figure>
-      <figure class="photo-slot"><img src="foto/foto4.jpeg" alt="Potret 4" data-zoom loading="lazy"><figcaption>potret 04</figcaption></figure>
-      <figure class="photo-slot"><img src="foto/foto5.jpeg" alt="Potret 5" data-zoom loading="lazy"><figcaption>potret 05</figcaption></figure>
-      <figure class="photo-slot photo-placeholder"><div class="photo-placeholder-inner"><span>＋</span><b>potret 06</b><small>tambahkan foto6.jpeg</small></div><figcaption>potret 06</figcaption></figure>
+    <div class="eyebrow">bab 08 · beberapa potret</div>
+    <h2 class="title">ya, ini MAY FITRI LESTARI</h2>
+    <div class="masonry">
+      <figure><img src="foto/foto2.jpeg" alt="Potret" data-zoom loading="lazy"><figcaption>[keterangan foto]</figcaption></figure>
+      <figure><img src="foto/foto3.jpeg" alt="Potret" data-zoom loading="lazy"><figcaption>[keterangan foto]</figcaption></figure>
+      <figure><img src="foto/foto4.jpeg" alt="Potret" data-zoom loading="lazy"><figcaption>[keterangan foto]</figcaption></figure>
     </div>
   </div>
 </section>
@@ -201,10 +183,16 @@ textarea.field{min-height:110px;resize:vertical}
 <section class="scene" id="s09">
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 09 · momen-momen kecil</div>
-    <h2 class="title">Momen-momen yang aku simpan</h2>
-    <p class="lead">Bukan cuma fotonya yang aku simpan, tapi juga cerita kecil di balik setiap momen. Enam potret di halaman sebelumnya jadi bagian dari cerita yang ingin aku ingat baik-baik.</p>
-    <div class="rule"></div>
-    <p class="small">enam foto · satu cerita · banyak momen kecil</p>
+    <h2 class="title">ya ini alasan aku minta foto kamu buat disimpen disini</h2>
+    <div class="memory-wall">
+      <img src="foto/foto1.jpeg" alt="" data-zoom loading="lazy">
+      <img src="foto/foto2.jpeg" alt="" data-zoom loading="lazy">
+      <img src="foto/foto3.jpeg" alt="" data-zoom loading="lazy">
+      <img src="foto/foto4.jpeg" alt="" data-zoom loading="lazy">
+      <img src="foto/foto5.jpeg" alt="" data-zoom loading="lazy">
+      <img src="foto/foto6.jpeg" alt="" data-zoom loading="lazy">
+      <img src="foto/foto7.jpeg" alt="" data-zoom loading="lazy">
+    </div>
   </div>
 </section>
 
@@ -227,9 +215,9 @@ textarea.field{min-height:110px;resize:vertical}
     <div class="eyebrow">bab 12 · kenapa harus kamu</div>
     <h2 class="title">Kenapa kamu</h2>
     <div class="cards">
-      <div class="card"><b>Alasan 01</b><p>[isi alasan spesifik kenapa dia]</p></div>
-      <div class="card"><b>Alasan 02</b><p>[isi alasan spesifik kenapa dia]</p></div>
-      <div class="card"><b>Alasan 03</b><p>[isi alasan spesifik kenapa dia]</p></div>
+      <div class="card"><b>Alasan 01</b><p>alasan pertama gaada</p></div>
+      <div class="card"><b>Alasan 02</b><p>intinya aku suka kamu</p></div>
+      <div class="card"><b>Alasan 03</b><p>ya, kamu</p></div>
     </div>
   </div>
 </section>
@@ -238,10 +226,11 @@ textarea.field{min-height:110px;resize:vertical}
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 13 · surat kecil</div>
     <div class="letter-card">
-      <p>ANONIM,</p>
-      <p>[Tulis isi suratnya di sini — jujur aja, nggak usah terlalu puitis kalau memang bukan gaya kamu. Yang penting sampai maksudnya.]</p>
-      <p>[Lanjutan surat, kalau ada.]</p>
-      <div class="signature">— [nama kamu]</div>
+      <p>MAY,</p>
+      <p>ini emang sengaja aku buat ini, jadi web bisa dibilang, bukan karna mau pamer(tapi sorry aku emang "jago")</p>
+      <p></p>
+      <div class="signature">— from man who likes you</div>
+      </div>
     </div>
   </div>
 </section>
@@ -250,20 +239,39 @@ textarea.field{min-height:110px;resize:vertical}
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 14 · lagu ini, buat kamu</div>
     <h2 class="title">Satu lagu buat nemenin kamu baca</h2>
-    <p class="lead">[Judul lagu — Penyanyi]. [Ceritain kenapa lagu ini yang kamu pilih.]</p>
+    <p class="lead"></p>
     <div class="chips"><span>Klik ikon ♫ di pojok atas buat mutar lagunya</span></div>
   </div>
 </section>
 
+<section class="scene center" id="s15">
+  <div class="scene-inner reveal">
+    <div class="eyebrow">bab 15 · satu video kecil</div>
+    <h2 class="title">Satu video kecil</h2>
+    <div class="video-wrap"><video id="finalVideo" controls playsinline><source src="video/LINE.mp4" type="video/mp4"></video></div>
+    <p class="small" style="margin-top:14px">[keterangan singkat tentang videonya]</p>
+  </div>
+</section>
 
 <section class="scene center" id="s16">
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 16 · pertanyaannya</div>
-    <h2 class="display" style="font-size:clamp(36px,6.5vw,72px)">Boleh aku deketin kamu?</h2>
-    <p class="lead">Nggak harus jawab sekarang. Tapi kalau kamu juga ngerasa hal yang sama, aku seneng banget kalau kita bisa coba saling kenal lebih jauh — pelan-pelan aja, nggak usah dipaksa.</p>
+    <h2 class="display" style="font-size:clamp(36px,6.5vw,72px)">Mau ga?</h2>
+    <p class="lead">Harus jawab sekarang. Tapi kalau kamu juga ngerasa hal yang sama, aku seneng banget kalau kita bisa coba saling kenal lebih jauh — pelan-pelan aja, dan kalo kamu mau tolak ya bilang aja. </p>
   </div>
 </section>
 
+<section class="scene" id="s17">
+  <div class="scene-inner reveal">
+    <div class="eyebrow">bab 17 · yang bisa aku kasih</div>
+    <h2 class="title">Kalau kamu mau coba, ini yang bisa aku kasih</h2>
+    <div class="cards">
+      <div class="card"><b>Waktu</b><p>Aku nggak akan buat kamu nunggu tanpa kabar.</p></div>
+      <div class="card"><b>Usaha</b><p>Aku niat, bukan cuma modal kata-kata doang.</p></div>
+      <div class="card"><b>Kejujuran</b><p>Kalau ada yang mengganjal, aku akan ngomong, bukan diem-diem aja.</p></div>
+    </div>
+  </div>
+</section>
 
 <section class="scene center" id="s18">
   <div class="scene-inner reveal guest">
@@ -283,7 +291,8 @@ textarea.field{min-height:110px;resize:vertical}
   <div class="scene-inner reveal">
     <div class="eyebrow">bab 19 · kalau udah ada jawaban</div>
     <h2 class="title">Kalau kamu udah mikirin jawabannya...</h2>
-    <p class="lead">[Tulis di sini gimana kamu pengen dia ngasih jawaban — misalnya ajak chat balik, ajak ketemu, atau cukup dengan satu kata aja.]</p>
+    <p class="lead">ya isi si pesan diatas dek
+    </p>
   </div>
 </section>
 
@@ -337,34 +346,9 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.targe
 $$('.reveal').forEach(x=>io.observe(x));
 
 // lightbox
-function photoInteraction(img,event){
-  const frame=img.closest('.photo-slot,.portrait-frame');
-  if(!frame)return;
-  const rect=frame.getBoundingClientRect();
-  frame.style.setProperty('--mx',`${Math.max(0,Math.min(100,((event.clientX-rect.left)/rect.width)*100))}%`);
-  frame.style.setProperty('--my',`${Math.max(0,Math.min(100,((event.clientY-rect.top)/rect.height)*100))}%`);
-  frame.classList.remove('photo-active');
-  void frame.offsetWidth;
-  frame.classList.add('photo-active');
-  const symbols=['♡','♥','✦'];
-  for(let i=0;i<4;i++){
-    const s=document.createElement('span');
-    s.className='photo-heart'+(i===2?' gold':'');
-    s.textContent=symbols[i%symbols.length];
-    s.style.setProperty('--x',`${38+Math.random()*24}%`);
-    s.style.setProperty('--y',`${42+Math.random()*16}%`);
-    s.style.setProperty('--dx',`${(Math.random()*90-45).toFixed(0)}px`);
-    s.style.setProperty('--rot',`${(Math.random()*30-15).toFixed(0)}deg`);
-    s.style.animationDelay=`${i*45}ms`;
-    frame.appendChild(s);
-    setTimeout(()=>s.remove(),1100);
-  }
-  setTimeout(()=>openLB(img.src,img.alt||'ANONIM'),170);
-  setTimeout(()=>frame.classList.remove('photo-active'),650);
-}
 $$('img[data-zoom]').forEach(img=>{
-  img.addEventListener('click',(event)=>photoInteraction(img,event));
-  img.addEventListener('error',()=>img.closest('figure,.portrait-frame,.photo-slot')?.classList.add('missing'));
+  img.addEventListener('click',()=>openLB(img.src,img.alt||'ANONIM'));
+  img.addEventListener('error',()=>img.closest('figure,.portrait-frame')?.classList.add('missing'));
 });
 function openLB(src,cap){$('.lightbox img').src=src;$('.lb-caption').textContent=cap;$('.lightbox').classList.add('open')}
 function closeLB(){$('.lightbox').classList.remove('open')}
@@ -428,72 +412,6 @@ $('#guestForm')?.addEventListener('submit',e=>{
 });
 loadMsgs();
 
-// extra interactions: cursor glow, 3D cards, click sparkles, double-click hearts, chapter dots
-const glow=$('.cursor-glow');
-let lastPointer={x:innerWidth/2,y:innerHeight/2};
-window.addEventListener('pointermove',e=>{
-  lastPointer={x:e.clientX,y:e.clientY};
-  if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';glow.style.opacity='1'}
-},{passive:true});
-window.addEventListener('pointerleave',()=>{if(glow)glow.style.opacity='0'});
-
-$$('.card').forEach(card=>{
-  card.addEventListener('pointermove',e=>{
-    if(innerWidth<=800)return;
-    const r=card.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
-    card.style.transform=`perspective(700px) rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*5).toFixed(2)}deg) translateY(-3px)`;
-  });
-  card.addEventListener('pointerleave',()=>card.style.transform='');
-  card.addEventListener('click',e=>{
-    const r=card.getBoundingClientRect(), dot=document.createElement('span');
-    dot.className='card-ripple'; dot.style.left=(e.clientX-r.left)+'px'; dot.style.top=(e.clientY-r.top)+'px';
-    card.appendChild(dot); setTimeout(()=>dot.remove(),750);
-  });
-});
-
-function burstAt(x,y){
-  ['✦','♡','·','✧','♥'].forEach((ch,i)=>{
-    const s=document.createElement('span'); s.className='click-spark'; s.textContent=ch;
-    s.style.left=x+'px'; s.style.top=y+'px';
-    s.style.setProperty('--dx',`${Math.cos(i*1.25)*55}px`);
-    s.style.setProperty('--dy',`${Math.sin(i*1.25)*55}px`);
-    s.style.setProperty('--rot',`${i*45-90}deg`);
-    document.body.appendChild(s); setTimeout(()=>s.remove(),850);
-  });
-}
-window.addEventListener('dblclick',e=>{
-  const img=e.target.closest('img[data-zoom]');
-  if(img){burstAt(e.clientX,e.clientY); toast('double click ✦♡');}
-});
-
-// small parallax on scene content while scrolling
-let ticking=false;
-window.addEventListener('scroll',()=>{
-  if(ticking)return; ticking=true;
-  requestAnimationFrame(()=>{
-    const mid=innerHeight/2;
-    $$('.scene .scene-inner').forEach(el=>{
-      const r=el.getBoundingClientRect(), d=(r.top+r.height/2-mid)/innerHeight;
-      if(Math.abs(d)<.7) el.style.setProperty('--parallax',`${(-d*7).toFixed(2)}px`); else el.style.setProperty('--parallax','0px');
-    });
-    ticking=false;
-  });
-},{passive:true});
-
-// chapter dots
-const dotBox=$('.section-progress');
-if(dotBox){
-  $$('.scene').forEach((scene,i)=>{
-    const b=document.createElement('button'); b.title=`Bab ${String(i+1).padStart(2,'0')}`;
-    b.addEventListener('click',()=>go(scene.id)); dotBox.appendChild(b);
-  });
-  const dots=$$('button',dotBox);
-  const dotIO=new IntersectionObserver(es=>es.forEach(e=>{
-    if(e.isIntersecting){const i=$$('.scene').indexOf(e.target);dots.forEach((d,j)=>d.classList.toggle('active',i===j));}
-  }),{threshold:.55});
-  $$('.scene').forEach(s=>dotIO.observe(s));
-}
-
 // keyboard shortcuts
 window.addEventListener('keydown',e=>{
   const typing=['INPUT','TEXTAREA'].includes(document.activeElement?.tagName);
@@ -506,7 +424,7 @@ window.addEventListener('keydown',e=>{
   }
 });
 
-$$('img,video').forEach(m=>m.addEventListener('error',()=>m.closest('.portrait-frame,.masonry figure,.photo-slot,.video-wrap')?.classList.add('missing')));
+$$('img,video').forEach(m=>m.addEventListener('error',()=>m.closest('.portrait-frame,.masonry figure,.video-wrap')?.classList.add('missing')));
 })();
 </script>
 </body></html>
