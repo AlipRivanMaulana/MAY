@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Dino Run — Ultimate Edition</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f4ed;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =========================
+   GAME CONTAINER
+========================= */
+
+.game-wrapper {
+    width: min(1100px, 96vw);
+    position: relative;
+}
+
+.game {
+    position: relative;
+    width: 100%;
+    height: min(620px, 78vh);
+    min-height: 430px;
+
+    overflow: hidden;
+    border: 3px solid #222;
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #f8fbff 0%,
+            #f8fbff 68%,
+            #f0eee7 68%,
+            #f0eee7 100%
+        );
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.18),
+        inset 0 0 0 1px rgba(255,255,255,.7);
+
+    transition: background .8s ease;
+}
+
+/* NIGHT */
+
+.game.night {
+    background:
+        linear-gradient(
+            to bottom,
+            #111827 0%,
+            #182235 68%,
+            #24282d 68%,
+            #24282d 100%
+        );
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.hud {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    right: 20px;
+    z-index: 30;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}
+
+.logo {
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-size: 15px;
+
+    background: rgba(255,255,255,.78);
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 2px solid #222;
+    box-shadow: 4px 4px 0 #222;
+}
+
+.night .logo {
+    color: white;
+    background: rgba(17,24,39,.8);
+    border-color: white;
+    box-shadow: 4px 4px 0 white;
+}
+
+.score-box {
+    display: flex;
+    gap: 8px;
+}
+
+.score {
+    min-width: 120px;
+    text-align: center;
+
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 18px;
+
+    background: rgba(255,255,255,.85);
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 2px solid #222;
+}
+
+.night .score {
+    color: white;
+    background: rgba(17,24,39,.85);
+    border-color: white;
+}
+
+/* =========================
+   SKY
+========================= */
+
+.sun {
+    position: absolute;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    right: 90px;
+    top: 85px;
+
+    background: #ffd166;
+    box-shadow: 0 0 35px rgba(255,209,102,.55);
+
+    transition: all .8s ease;
+}
+
+.night .sun {
+    background: #f5f3ce;
+    box-shadow: 0 0 25px rgba(255,255,255,.25);
+}
+
+.moon {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    right: 95px;
+    top: 90px;
+
+    opacity: 0;
+    transform: translateY(-20px);
+
+    background: #f9fafb;
+    box-shadow: 0 0 25px rgba(255,255,255,.25);
+
+    transition: all .8s ease;
+}
+
+.night .moon {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.night .sun {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* stars */
+
+.stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .8s;
+}
+
+.night .stars {
+    opacity: 1;
+}
+
+.star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .2; }
+    to { opacity: 1; }
+}
+
+/* =========================
+   CLOUDS
+========================= */
+
+.cloud {
+    position: absolute;
+    width: 95px;
+    height: 28px;
+    background: white;
+    border-radius: 30px;
+    opacity: .85;
+}
+
+.cloud::before,
+.cloud::after {
+    content: "";
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+}
+
+.cloud::before {
+    width: 42px;
+    height: 42px;
+    left: 17px;
+    bottom: 0;
+}
+
+.cloud::after {
+    width: 52px;
+    height: 52px;
+    left: 45px;
+    bottom: 0;
+}
+
+.cloud1 {
+    top: 145px;
+    left: 10%;
+    animation: cloudMove 22s linear infinite;
+}
+
+.cloud2 {
+    top: 205px;
+    left: 55%;
+    transform: scale(.7);
+    animation: cloudMove 31s linear infinite reverse;
+}
+
+.cloud3 {
+    top: 110px;
+    left: 78%;
+    transform: scale(.55);
+    animation: cloudMove 28s linear infinite;
+}
+
+@keyframes cloudMove {
+    from {
+        margin-left: -150px;
+    }
+
+    to {
+        margin-left: 1300px;
+    }
+}
+
+.night .cloud {
+    opacity: .07;
+}
+
+/* =========================
+   GROUND
+========================= */
+
+.ground {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 27%;
+    height: 5px;
+
+    background: #222;
+}
+
+.night .ground {
+    background: #f8fafc;
+}
+
+.ground::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 5px;
+
+    width: 100%;
+    height: 3px;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 45px,
+            rgba(0,0,0,.15) 45px 75px
+        );
+}
+
+/* =========================
+   DINO
+========================= */
+
+.dino {
+    position: absolute;
+
+    left: 9%;
+    bottom: calc(27% + 5px);
+
+    width: 66px;
+    height: 72px;
+
+    z-index: 15;
+
+    transform-origin: bottom center;
+}
+
+.dino-body {
+    position: absolute;
+    right: 0;
+    bottom: 12px;
+
+    width: 43px;
+    height: 48px;
+
+    background: #2b2d42;
+    border-radius: 5px 13px 4px 4px;
+}
+
+.dino-head {
+    position: absolute;
+    right: -2px;
+    top: 0;
+
+    width: 43px;
+    height: 37px;
+
+    background: #2b2d42;
+    border-radius: 5px 12px 3px 3px;
+}
+
+.dino-eye {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+
+    right: 9px;
+    top: 9px;
+
+    background: white;
+    border-radius: 50%;
+}
+
+.dino-eye::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+
+    right: 0;
+    top: 1px;
+
+    background: #222;
+    border-radius: 50%;
+}
+
+.dino-mouth {
+    position: absolute;
+    width: 19px;
+    height: 3px;
+
+    right: 2px;
+    top: 26px;
+
+    background: #111;
+}
+
+.dino-tail {
+    position: absolute;
+
+    left: -18px;
+    bottom: 27px;
+
+    width: 25px;
+    height: 13px;
+
+    background: #2b2d42;
+    clip-path: polygon(100% 0, 100% 100%, 0 45%);
+}
+
+.leg {
+    position: absolute;
+
+    bottom: 0;
+    width: 11px;
+    height: 26px;
+
+    background: #2b2d42;
+    border-radius: 3px;
+}
+
+.leg1 {
+    right: 25px;
+}
+
+.leg2 {
+    right: 5px;
+}
+
+.arm {
+    position: absolute;
+
+    right: -7px;
+    top: 38px;
+
+    width: 18px;
+    height: 8px;
+
+    background: #2b2d42;
+    transform: rotate(20deg);
+}
+
+.dino.running .leg1 {
+    animation: legA .18s infinite alternate;
+}
+
+.dino.running .leg2 {
+    animation: legB .18s infinite alternate;
+}
+
+@keyframes legA {
+    from { transform: rotate(25deg); }
+    to { transform: rotate(-25deg); }
+}
+
+@keyframes legB {
+    from { transform: rotate(-25deg); }
+    to { transform: rotate(25deg); }
+}
+
+.dino.jump {
+    animation: jump .65s cubic-bezier(.2,.8,.3,1);
+}
+
+@keyframes jump {
+    0% { transform: translateY(0); }
+    40% { transform: translateY(-190px); }
+    70% { transform: translateY(-190px); }
+    100% { transform: translateY(0); }
+}
+
+/* =========================
+   CACTUS
+========================= */
+
+.obstacle {
+    position: absolute;
+    z-index: 10;
+}
+
+.cactus {
+    bottom: calc(27% + 5px);
+
+    width: 38px;
+    height: 72px;
+}
+
+.cactus-main {
+    position: absolute;
+    left: 12px;
+    bottom: 0;
+
+    width: 17px;
+    height: 72px;
+
+    background: #4f772d;
+    border-radius: 8px 8px 3px 3px;
+}
+
+.cactus-arm {
+    position: absolute;
+
+    width: 15px;
+    height: 36px;
+
+    background: #4f772d;
+    border-radius: 8px;
+}
+
+.cactus-arm.left {
+    left: 0;
+    top: 27px;
+}
+
+.cactus-arm.right {
+    right: 0;
+    top: 16px;
+}
+
+.cactus-arm.left::after,
+.cactus-arm.right::after {
+    content: "";
+    position: absolute;
+
+    width: 14px;
+    height: 16px;
+
+    background: #4f772d;
+    border-radius: 7px;
+}
+
+.cactus-arm.left::after {
+    left: 6px;
+    top: -8px;
+}
+
+.cactus-arm.right::after {
+    right: 6px;
+    top: -8px;
+}
+
+/* =========================
+   BIRD
+========================= */
+
+.bird {
+    width: 65px;
+    height: 40px;
+
+    bottom: calc(27% + 90px);
+}
+
+.bird-body {
+    position: absolute;
+
+    width: 35px;
+    height: 24px;
+
+    right: 10px;
+    top: 8px;
+
+    background: #6d597a;
+    border-radius: 50%;
+}
+
+.bird-head {
+    position: absolute;
+
+    width: 24px;
+    height: 24px;
+
+    right: 0;
+    top: 0;
+
+    background: #6d597a;
+    border-radius: 50%;
+}
+
+.bird-eye {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+
+    width: 4px;
+    height: 4px;
+
+    background: white;
+    border-radius: 50%;
+}
+
+.bird-wing {
+    position: absolute;
+
+    width: 35px;
+    height: 15px;
+
+    left: 0;
+    top: 10px;
+
+    background: #8a6b91;
+    border-radius: 50%;
+    transform-origin: right center;
+
+    animation: wing .25s infinite alternate;
+}
+
+@keyframes wing {
+    from { transform: rotate(20deg); }
+    to { transform: rotate(-25deg); }
+}
+
+/* =========================
+   PARTICLES
+========================= */
+
+.particle {
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    background: #222;
+    border-radius: 2px;
+
+    pointer-events: none;
+    z-index: 50;
+
+    animation: particle .65s forwards;
+}
+
+@keyframes particle {
+    to {
+        transform:
+            translate(
+                var(--x),
+                var(--y)
+            )
+            rotate(180deg);
+
+        opacity: 0;
+    }
+}
+
+/* =========================
+   START SCREEN
+========================= */
+
+.overlay {
+    position: absolute;
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(255,255,255,.65);
+    backdrop-filter: blur(7px);
+
+    transition: opacity .3s;
+}
+
+.night .overlay {
+    background: rgba(10,15,25,.7);
+}
+
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.panel {
+    text-align: center;
+    padding: 35px;
+
+    max-width: 460px;
+}
+
+.dino-title {
+    font-size: clamp(42px, 7vw, 76px);
+    font-weight: 1000;
+    letter-spacing: -5px;
+    color: #2b2d42;
+
+    text-shadow:
+        5px 5px 0 #fff,
+        8px 8px 0 #2b2d42;
+}
+
+.night .dino-title {
+    color: white;
+    text-shadow:
+        5px 5px 0 #111827,
+        8px 8px 0 white;
+}
+
+.subtitle {
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: .75;
+}
+
+.start-btn {
+    margin-top: 25px;
+
+    border: 3px solid #222;
+    background: #ffd166;
+
+    padding: 14px 28px;
+
+    border-radius: 14px;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow: 5px 5px 0 #222;
+
+    transition: .15s;
+}
+
+.start-btn:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 7px 7px 0 #222;
+}
+
+.start-btn:active {
+    transform: translate(4px,4px);
+    box-shadow: 1px 1px 0 #222;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+    position: absolute;
+
+    bottom: 16px;
+    left: 20px;
+    right: 20px;
+
+    z-index: 40;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hint {
+    font-size: 12px;
+    opacity: .55;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.small-btn {
+    width: 42px;
+    height: 42px;
+
+    border: 2px solid #222;
+    background: rgba(255,255,255,.8);
+
+    border-radius: 10px;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+.night .small-btn {
+    color: white;
+    background: rgba(17,24,39,.8);
+    border-color: white;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.mobile-jump {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .game {
+        height: 72vh;
+        min-height: 420px;
+        border-radius: 18px;
+    }
+
+    .hud {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+    }
+
+    .logo {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+
+    .score {
+        min-width: 100px;
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .sun,
+    .moon {
+        right: 40px;
+        top: 100px;
+    }
+
+    .dino {
+        left: 10%;
+    }
+
+    .hint {
+        display: none;
+    }
+
+    .mobile-jump {
+        display: block;
+
+        width: 65px;
+        height: 65px;
+
+        border-radius: 50%;
+
+        border: 3px solid #222;
+        background: #ffd166;
+
+        font-size: 25px;
+        font-weight: bold;
+
+        box-shadow: 4px 4px 0 #222;
+
+        touch-action: manipulation;
+    }
+
+    .controls {
+        bottom: 10px;
+    }
+}
+
+/* =========================
+   GAME OVER EFFECT
+========================= */
+
+.game.over {
+    animation: shake .35s;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+}
+
+/* combo text */
+
+.combo {
+    position: absolute;
+
+    top: 85px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 80;
+
+    font-size: 18px;
+    font-weight: 900;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.combo.show {
+    animation: combo .8s forwards;
+}
+
+@keyframes combo {
+    0% {
+        opacity: 0;
+        transform: translate(-50%,20px) scale(.8);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translate(-50%,0) scale(1.1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%,-30px) scale(1);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game-wrapper">
+
+    <div class="game" id="game">
+
+        <!-- HUD -->
+        <div class="hud">
+
+            <div class="logo">
+                🦖 DINO RUN
+            </div>
+
+            <div class="score-box">
+
+                <div class="score">
+                    SCORE <span id="score">00000</span>
+                </div>
+
+                <div class="score">
+                    HI <span id="highScore">00000</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SKY -->
+        <div class="sun"></div>
+        <div class="moon"></div>
+
+        <div class="stars">
+            <i class="star" style="left:8%;top:90px"></i>
+            <i class="star" style="left:18%;top:170px"></i>
+            <i class="star" style="left:30%;top:80px"></i>
+            <i class="star" style="left:42%;top:140px"></i>
+            <i class="star" style="left:55%;top:70px"></i>
+            <i class="star" style="left:67%;top:165px"></i>
+            <i class="star" style="left:78%;top:115px"></i>
+            <i class="star" style="left:90%;top:180px"></i>
+        </div>
+
+        <!-- CLOUDS -->
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+
+        <!-- GROUND -->
+        <div class="ground"></div>
+
+        <!-- DINO -->
+        <div class="dino running" id="dino">
+
+            <div class="dino-tail"></div>
+
+            <div class="dino-body"></div>
+
+            <div class="dino-head">
+                <div class="dino-eye"></div>
+                <div class="dino-mouth"></div>
+            </div>
+
+            <div class="arm"></div>
+
+            <div class="leg leg1"></div>
+            <div class="leg leg2"></div>
+
+        </div>
+
+        <!-- COMBO -->
+        <div class="combo" id="combo">
+            NICE! ✨
+        </div>
+
+        <!-- START / GAME OVER -->
+        <div class="overlay" id="overlay">
+
+            <div class="panel">
+
+                <div class="dino-title" id="title">
+                    DINO RUN
+                </div>
+
+                <div class="subtitle" id="message">
+                    Lompatin semua rintangan dan pecahkan high score kamu!
+                    <br><br>
+                    <b>SPACE</b> / <b>↑</b> untuk lompat
+                </div>
+
+                <button class="start-btn" id="startBtn">
+                    ▶ MULAI GAME
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="controls">
+
+            <div class="hint">
+                SPACE / ↑ = LOMPAT &nbsp; • &nbsp; P = PAUSE
+            </div>
+
+            <div class="buttons">
+
+                <button class="small-btn" id="pauseBtn">
+                    ⏸
+                </button>
+
+                <button class="mobile-jump" id="jumpBtn">
+                    ↑
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+/* =====================================================
+   DINO RUN — ULTIMATE EDITION
+===================================================== */
+
+const game = document.getElementById("game");
+const dino = document.getElementById("dino");
+
+const scoreEl = document.getElementById("score");
+const highScoreEl = document.getElementById("highScore");
+
+const overlay = document.getElementById("overlay");
+const title = document.getElementById("title");
+const message = document.getElementById("message");
+
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const jumpBtn = document.getElementById("jumpBtn");
+
+const comboEl = document.getElementById("combo");
+
+/* =========================
+   GAME STATE
+========================= */
+
+let running = false;
+let paused = false;
+
+let score = 0;
+
+let highScore =
+    Number(localStorage.getItem("dinoHighScore")) || 0;
+
+let speed = 7;
+
+let obstacleTimer = 0;
+let scoreTimer = 0;
+let nightTimer = 0;
+
+let lastTime = 0;
+
+let obstacles = [];
+
+let audioCtx = null;
+
+/* =========================
+   INITIAL SCORE
+========================= */
+
+highScoreEl.textContent =
+    String(highScore).padStart(5, "0");
+
+/* =========================
+   AUDIO
+========================= */
+
+function initAudio() {
+
+    if (!audioCtx) {
+        audioCtx =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+    }
+
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+}
+
+function soundJump() {
+
+    initAudio();
+
+    const osc =
+        audioCtx.createOscillator();
+
+    const gain =
+        audioCtx.createGain();
+
+    osc.type = "square";
+
+    osc.frequency.setValueAtTime(
+        300,
+        audioCtx.currentTime
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        600,
+        audioCtx.currentTime + .12
+    );
+
+    gain.gain.setValueAtTime(
+        .06,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audioCtx.currentTime + .15
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + .15);
+}
+
+function soundHit() {
+
+    initAudio();
+
+    const osc =
+        audioCtx.createOscillator();
+
+    const gain =
+        audioCtx.createGain();
+
+    osc.type = "sawtooth";
+
+    osc.frequency.setValueAtTime(
+        160,
+        audioCtx.currentTime
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        50,
+        audioCtx.currentTime + .35
+    );
+
+    gain.gain.setValueAtTime(
+        .12,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audioCtx.currentTime + .35
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + .35);
+}
+
+function soundPoint() {
+
+    initAudio();
+
+    const osc =
+        audioCtx.createOscillator();
+
+    const gain =
+        audioCtx.createGain();
+
+    osc.type = "sine";
+
+    osc.frequency.setValueAtTime(
+        700,
+        audioCtx.currentTime
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        1100,
+        audioCtx.currentTime + .08
+    );
+
+    gain.gain.setValueAtTime(
+        .04,
+        audioCtx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audioCtx.currentTime + .1
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + .1);
+}
+
+/* =========================
+   START GAME
+========================= */
+
+function startGame() {
+
+    initAudio();
+
+    clearObstacles();
+
+    score = 0;
+    speed = 7;
+
+    obstacleTimer = 0;
+    scoreTimer = 0;
+    nightTimer = 0;
+
+    running = true;
+    paused = false;
+
+    game.classList.remove("over");
+
+    overlay.classList.add("hidden");
+
+    pauseBtn.textContent = "⏸";
+
+    updateScore();
+
+    lastTime = performance.now();
+
+    requestAnimationFrame(loop);
+}
+
+/* =========================
+   JUMP
+========================= */
+
+function jump() {
+
+    if (!running || paused) return;
+
+    if (dino.classList.contains("jump")) return;
+
+    dino.classList.add("jump");
+
+    soundJump();
+
+    setTimeout(() => {
+        dino.classList.remove("jump");
+    }, 650);
+}
+
+/* =========================
+   OBSTACLE CREATION
+========================= */
+
+function createObstacle() {
+
+    const isBird =
+        Math.random() < .22 && score > 300;
+
+    const obstacle =
+        document.createElement("div");
+
+    obstacle.className =
+        isBird
+            ? "obstacle bird"
+            : "obstacle cactus";
+
+    if (isBird) {
+
+        obstacle.innerHTML = `
+            <div class="bird-body"></div>
+            <div class="bird-head">
+                <div class="bird-eye"></div>
+            </div>
+            <div class="bird-wing"></div>
+        `;
+
+    } else {
+
+        obstacle.innerHTML = `
+            <div class="cactus-main"></div>
+            <div class="cactus-arm left"></div>
+            <div class="cactus-arm right"></div>
+        `;
+    }
+
+    obstacle.style.left =
+        game.clientWidth + 50 + "px";
+
+    game.appendChild(obstacle);
+
+    obstacles.push({
+        el: obstacle,
+        x: game.clientWidth + 50,
+        width: isBird ? 65 : 38,
+        passed: false
+    });
+}
+
+/* =========================
+   COLLISION
+========================= */
+
+function collision(a, b) {
+
+    const ar = a.getBoundingClientRect();
+    const br = b.getBoundingClientRect();
+
+    const padding = 8;
+
+    return !(
+        ar.right - padding < br.left + padding ||
+        ar.left + padding > br.right - padding ||
+        ar.bottom - padding < br.top + padding ||
+        ar.top + padding > br.bottom - padding
+    );
+}
+
+/* =========================
+   PARTICLES
+========================= */
+
+function createParticles() {
+
+    const rect =
+        dino.getBoundingClientRect();
+
+    const gameRect =
+        game.getBoundingClientRect();
+
+    const x =
+        rect.left - gameRect.left + 30;
+
+    const y =
+        rect.top - gameRect.top + 30;
+
+    for (let i = 0; i < 18; i++) {
+
+        const particle =
+            document.createElement("div");
+
+        particle.className = "particle";
+
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+
+        particle.style.setProperty(
+            "--x",
+            `${(Math.random() - .5) * 130}px`
+        );
+
+        particle.style.setProperty(
+            "--y",
+            `${(Math.random() - .5) * 130}px`
+        );
+
+        game.appendChild(particle);
+
+        setTimeout(() => {
+            particle.remove();
+        }, 700);
+    }
+}
+
+/* =========================
+   SCORE
+========================= */
+
+function updateScore() {
+
+    scoreEl.textContent =
+        String(score).padStart(5, "0");
+
+    if (score > highScore) {
+
+        highScore = score;
+
+        highScoreEl.textContent =
+            String(highScore).padStart(5, "0");
+
+        localStorage.setItem(
+            "dinoHighScore",
+            highScore
+        );
+    }
+}
+
+/* =========================
+   COMBO
+========================= */
+
+function showCombo(text) {
+
+    comboEl.textContent = text;
+
+    comboEl.classList.remove("show");
+
+    void comboEl.offsetWidth;
+
+    comboEl.classList.add("show");
+}
+
+/* =========================
+   DAY / NIGHT
+========================= */
+
+function updateDayNight(dt) {
+
+    nightTimer += dt;
+
+    if (nightTimer > 25000) {
+
+        game.classList.toggle("night");
+
+        nightTimer = 0;
+    }
+}
+
+/* =========================
+   GAME OVER
+========================= */
+
+function gameOver() {
+
+    running = false;
+
+    soundHit();
+
+    createParticles();
+
+    game.classList.add("over");
+
+    title.textContent = "GAME OVER";
+
+    message.innerHTML = `
+        Score kamu:
+        <strong>${score}</strong>
+        <br><br>
+        ${score >= highScore
+            ? "🏆 HIGH SCORE!"
+            : "Coba pecahkan high score lagi!"}
+        <br><br>
+        <b>SPACE</b> untuk main lagi
+    `;
+
+    startBtn.textContent =
+        "🔄 MAIN LAGI";
+
+    overlay.classList.remove("hidden");
+}
+
+/* =========================
+   CLEAR
+========================= */
+
+function clearObstacles() {
+
+    obstacles.forEach(o => {
+        o.el.remove();
+    });
+
+    obstacles = [];
+}
+
+/* =========================
+   GAME LOOP
+========================= */
+
+function loop(time) {
+
+    if (!running) return;
+
+    if (paused) {
+        requestAnimationFrame(loop);
+        return;
+    }
+
+    const dt =
+        Math.min(time - lastTime, 40);
+
+    lastTime = time;
+
+    /* SCORE */
+
+    scoreTimer += dt;
+
+    if (scoreTimer > 100) {
+
+        score++;
+
+        scoreTimer = 0;
+
+        updateScore();
+
+        if (score % 100 === 0) {
+            soundPoint();
+            showCombo("+" + score + " POINTS!");
+        }
+    }
+
+    /* SPEED */
+
+    speed =
+        7 +
+        Math.min(score / 220, 7);
+
+    /* OBSTACLE */
+
+    obstacleTimer += dt;
+
+    const spawnRate =
+        Math.max(
+            650,
+            1450 - speed * 55
+        );
+
+    if (obstacleTimer > spawnRate) {
+
+        createObstacle();
+
+        obstacleTimer = 0;
+    }
+
+    /* MOVE */
+
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+
+        const obstacle = obstacles[i];
+
+        obstacle.x -=
+            speed * dt / 16;
+
+        obstacle.el.style.left =
+            obstacle.x + "px";
+
+        /* COLLISION */
+
+        if (collision(dino, obstacle.el)) {
+
+            gameOver();
+
+            return;
+        }
+
+        /* PASSED */
+
+        if (
+            !obstacle.passed &&
+            obstacle.x + obstacle.width <
+            dino.offsetLeft
+        ) {
+
+            obstacle.passed = true;
+
+            if (Math.random() < .18) {
+                showCombo(
+                    Math.random() < .5
+                        ? "NICE! ✨"
+                        : "CLEAN! 🔥"
+                );
+            }
+        }
+
+        /* REMOVE */
+
+        if (
+            obstacle.x <
+            -obstacle.width - 100
+        ) {
+
+            obstacle.el.remove();
+
+            obstacles.splice(i, 1);
+        }
+    }
+
+    /* DAY NIGHT */
+
+    updateDayNight(dt);
+
+    requestAnimationFrame(loop);
+}
+
+/* =========================
+   PAUSE
+========================= */
+
+function togglePause() {
+
+    if (!running) return;
+
+    paused = !paused;
+
+    pauseBtn.textContent =
+        paused ? "▶" : "⏸";
+}
+
+/* =========================
+   KEYBOARD
+========================= */
+
+document.addEventListener(
+    "keydown",
+    e => {
+
+        if (
+            e.code === "Space" ||
+            e.code === "ArrowUp"
+        ) {
+
+            e.preventDefault();
+
+            if (!running) {
+                startGame();
+            } else {
+                jump();
+            }
+        }
+
+        if (e.code === "KeyP") {
+            togglePause();
+        }
+    }
+);
+
+/* =========================
+   BUTTONS
+========================= */
+
+startBtn.addEventListener(
+    "click",
+    startGame
+);
+
+pauseBtn.addEventListener(
+    "click",
+    togglePause
+);
+
+jumpBtn.addEventListener(
+    "pointerdown",
+    e => {
+
+        e.preventDefault();
+
+        if (!running) {
+            startGame();
+        } else {
+            jump();
+        }
+    }
+);
+
+/* =========================
+   CLICK GAME = JUMP
+========================= */
+
+game.addEventListener(
+    "pointerdown",
+    e => {
+
+        if (
+            e.target.closest("button") ||
+            e.target.closest(".overlay")
+        ) return;
+
+        if (running) {
+            jump();
+        }
+    }
+);
+
+/* =========================
+   EASTER EGG
+   tekan D I N O
+========================= */
+
+let secret = "";
+
+document.addEventListener(
+    "keydown",
+    e => {
+
+        secret += e.key.toLowerCase();
+
+        if (secret.length > 10) {
+            secret = secret.slice(-10);
+        }
+
+        if (secret.includes("dino")) {
+
+            showCombo("🦖 DINO MODE!");
+
+            game.style.filter =
+                "hue-rotate(35deg)";
+
+            setTimeout(() => {
+
+                game.style.filter = "";
+
+            }, 1800);
+
+            secret = "";
+        }
+    }
+);
+
+/* =========================
+   PREVENT DOUBLE TAP ZOOM
+========================= */
+
+let lastTouch = 0;
+
+document.addEventListener(
+    "touchend",
+    e => {
+
+        const now = Date.now();
+
+        if (now - lastTouch <= 300) {
+            e.preventDefault();
+        }
+
+        lastTouch = now;
+    },
+    { passive: false }
+);
+</script>
+
+</body>
+</html>
